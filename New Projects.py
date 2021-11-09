@@ -29,13 +29,13 @@ for item in scripts:
 
 def ModInstaller():
     with open('Modules Installer.bat', 'w') as Mods:
-        if os.path.isfile(pydist + 'Scirpts\\pyinstaller.exe') is False:
+        if os.path.isfile(f_pydist + 'pyinstaller.exe') is False:
             Mods.write('pip install pyinstaller\n')
-        if os.path.isfile(pydist + 'Scirpts\\pycodestyle.exe') is False:
+        if os.path.isfile(f_pydist + 'pycodestyle.exe') is False:
             Mods.write('pip install pycodestyle\n')
-        if os.path.isfile(pydist + 'Scirpts\\pyflakes.exe') is False:
+        if os.path.isfile(f_pydist + 'pyflakes.exe') is False:
             Mods.write('pip install pyflakes\n')
-        if os.path.isfile(pydist + 'Scirpts\\Converter.py') is False:
+        if os.path.isfile(f_pydist + 'Converter.py') is False:
             Mods.write('Please copy/paste Converter.py manually.')
         Mods.close()
     return
