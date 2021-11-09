@@ -18,31 +18,35 @@ f_pydist = pydist.replace('_', ' ')
 print(f_pydist)
 scripts = ['pyinstaller.exe', 'pycodestyle.exe', 'pyflakes.exe', 'Converter.py']
 
-make_mods = 0
-for item in scripts:
-    file_check = f_pydist + 'Scripts\\\\' + item
-    if os.path.isfile(file_check) is False:
-        make_mods += 1
-    else:
-        make_mods += 0
-
 
 def ModInstaller():
-    with open('Modules Installer.bat', 'w') as Mods:
-        if os.path.isfile(f_pydist + 'Scripts\\pyinstaller.exe') is False:
-            Mods.write('pip install pyinstaller\n')
-        if os.path.isfile(f_pydist + 'Scripts\\pycodestyle.exe') is False:
-            Mods.write('pip install pycodestyle\n')
-        if os.path.isfile(f_pydist + 'Scripts\\pyflakes.exe') is False:
-            Mods.write('pip install pyflakes\n')
-        if os.path.isfile(f_pydist + 'Scripts\\Converter.py') is False:
-            Mods.write('Please copy/paste Converter.py manually.')
-        Mods.close()
+    global scripts
+    make_mods = 0
+
+    for item in scripts:
+        file_check = f_pydist + 'Scripts\\\\' + item
+        if os.path.isfile(file_check) is False:
+            make_mods += 1
+        else:
+            make_mods += 0
+
+    if make_mods == 0:
+        pass
+    else:
+        with open('Modules Installer.bat', 'w') as Mods:
+            if os.path.isfile(f_pydist + 'Scripts\\pyinstaller.exe') is False:
+                Mods.write('pip install pyinstaller\n')
+            if os.path.isfile(f_pydist + 'Scripts\\pycodestyle.exe') is False:
+                Mods.write('pip install pycodestyle\n')
+            if os.path.isfile(f_pydist + 'Scripts\\pyflakes.exe') is False:
+                Mods.write('pip install pyflakes\n')
+            if os.path.isfile(f_pydist + 'Scripts\\Converter.py') is False:
+                Mods.write('Please copy/paste Converter.py manually.')
+            Mods.close()
+    
     return
 
-
-if make_mods >= 1:
-    ModInstaller()
+ModInstaller()
 
 
 def Create_stuff(file, Fpath, desc):
