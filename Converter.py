@@ -1,5 +1,8 @@
-# Convert Python to EXE ###
-# This program is designed to do restore backup froma zip
+# Convert Python to EXE
+# This program takes pyinstaller and converts any other python script
+# into an exe file with or without a provide Icon *.ico file. It will
+# also clean up after itself once the process is complete and leave
+# the end product *.exe file in the same directory as the script.
 
 import os
 import shutil
