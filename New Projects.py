@@ -9,49 +9,32 @@ import sys
 import re
 
 
-# find Python folder
-dist = sys.executable
-redist = dist.replace(' ', '_')
-xout = len(dist) - 10
-pydist = re.escape(redist[:xout])
-f_pydist = pydist.replace('_', ' ')
-print(f_pydist)
-scripts = ['pyinstaller.exe', 'pycodestyle.exe', 'pyflakes.exe', 'Converter.py']
-
-
-def ModInstaller():
-    global scripts
-    make_mods = 0
-
-    for item in scripts:
-        file_check = f_pydist + 'Scripts\\\\' + item
-        if os.path.isfile(file_check) is False:
-            make_mods += 1
-        else:
-            make_mods += 0
-
-    if make_mods == 0:
-        pass
+def Link_strip(link):
+    if link.find(' ') != -1:
+        spaces = True
+        step1 = link.replace(' ','_')
     else:
-        with open('Modules Installer.bat', 'w') as Mods:
-            if os.path.isfile(f_pydist + 'Scripts\\pyinstaller.exe') is False:
-                Mods.write('pip install pyinstaller\n')
-            if os.path.isfile(f_pydist + 'Scripts\\pycodestyle.exe') is False:
-                Mods.write('pip install pycodestyle\n')
-            if os.path.isfile(f_pydist + 'Scripts\\pyflakes.exe') is False:
-                Mods.write('pip install pyflakes\n')
-            if os.path.isfile(f_pydist + 'Scripts\\Converter.py') is False:
-                Mods.write('Please copy/paste Converter.py manually.')
-            Mods.close()
-    
-    return
+        spaces = False
+        pass 
 
-ModInstaller()
+    if link == sys.executable:
+        step2 = len(step1) - 10  # Removes 'python.exe' from link
+        step3 = re.escape(step1[:step2])
+    else:
+        step3 = re.escape(step1)
+
+    if spaces is True:
+        step4 = step3.replace('_',' ')
+    else:
+        pass
+
+    return step4
 
 
-def Create_stuff(file, Fpath, desc):
+def Create_stuff(file, desc):
     # Create folder and file for the project
-    pyfile = Fpath + '\\' + file + '.py'
+    pyfile = file + '\\' + file + '.py'
+    print(pyfile)
 
     if os.path.isdir(file) is True:
         # Create the work folder
@@ -80,11 +63,39 @@ def Create_stuff(file, Fpath, desc):
     return
 
 
-def Crafter_checkers(file, Fpath, PyPath):
+def ModInstaller():
+    with open('Modules Installer.bat', 'w') as Mods:
+        if os.path.isfile(f_pydist + 'pyinstaller.exe') is False:
+            Mods.write('pip install pyinstaller\n')
+        if os.path.isfile(f_pydist + 'pycodestyle.exe') is False:
+            Mods.write('pip install pycodestyle\n')
+        if os.path.isfile(f_pydist + 'pyflakes.exe') is False:
+            Mods.write('pip install pyflakes\n')
+        if os.path.isfile(f_pydist + 'Converter.py') is False:
+            Mods.write('Please copy/paste Converter.py manually.')
+        Mods.close()
+    return
+
+
+def Crafter_checkers(file):
     # Move CodeStyle and PyFlakes to folder, creater checker script
-    global scripts
+    dist = Link_strip(sys.executable)
+    scripts_path = dist + 'Scripts\\'
+    scripts = ['pyinstaller.exe', 'pycodestyle.exe', 'pyflakes.exe', 'Converter.py']
+
+    make_mods = 0
     for item in scripts:
-        shutil.copy(PyPath + item, Fpath + item)
+        file_check = dist + 'Scripts\\' + item
+        if os.path.isfile(file_check) is False:
+            make_mods += 1
+        else:
+            make_mods += 0
+
+    if make_mods >= 1:
+        ModInstaller()
+
+    for item in scripts:
+        shutil.copy(scripts_path + item, file + '\\' + item)
 
     with open(file + '\\checker.bat', 'w') as king:
         king.write('pycodestyle --ignore=E501 "' + file + '.py">Revisions.txt\n')
@@ -94,14 +105,9 @@ def Crafter_checkers(file, Fpath, PyPath):
 def Main():
     work_file = input('What is the name of the porject?')
     desc = input('Describe what this script does:\n')
-    # work_file = 'Python Breaker'
-    # desc = '0123456789012345678901234567890123456798ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-    folder_path = 'D:\\Documents\\Documents\\[-] Coding Projects\\-01- Work Scripts'
-    dest_path = folder_path + '\\' + work_file
-    py_path = pydist + 'Scripts\\'
-    folder = folder_path + '\\' + work_file
-    Create_stuff(work_file, dest_path, desc)
-    Crafter_checkers(work_file, dest_path + '\\', py_path)
+    Create_stuff(work_file, desc)  # File / Folder / Description
+    Crafter_checkers(work_file)  # File / Folder / Python Script folder
 
 
 Main()
+                                                                                                                                                                         
