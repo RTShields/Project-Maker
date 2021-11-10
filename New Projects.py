@@ -85,7 +85,7 @@ def Crafter_checkers(file):
 
     make_mods = 0
     for item in scripts:
-        file_check = dist + 'Scripts\\' + item
+        file_check = scripts_path + item
         if os.path.isfile(file_check) is False:
             make_mods += 1
         else:
@@ -103,11 +103,13 @@ def Crafter_checkers(file):
 
 
 def Main():
-    work_file = input('What is the name of the porject?')
-    desc = input('Describe what this script does:\n')
+    #work_file = input('What is the name of the porject?')
+    #desc = input('Describe what this script does:\n')
+    work_file = 'Modules'
+    desc = 'This script runs through a predefined list of python modules and creates a batch file to pip install each one.'
     Create_stuff(work_file, desc)  # File / Folder / Description
     Crafter_checkers(work_file)  # File / Folder / Python Script folder
 
 
 Main()
-                                                                                                                                                                         
+  
